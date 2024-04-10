@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.0.13 - 2024-04-10
+
+### Added
+- Add prune orphaned blocks utils command.
+- Add `beforeElementDeleteForSite` to block element.
+- Add `--field`, `--owner-id`, and `--type` resave options.
+
+### Fixed
+- Fix an error when running content table migrations.
+
 ## 3.0.12 - 2023-10-05
 
 ### Fixed
