@@ -840,34 +840,36 @@ class SuperTableField extends Field implements EagerLoadingFieldInterface, GqlIn
     {
         /** @var SuperTableBlockQuery|Collection $value */
         $value = $element->getFieldValue($this->handle);
-        $blocks = $value->all();
-        $allBlocksValidate = true;
-        $scenario = $element->getScenario();
 
-        foreach ($blocks as $i => $block) {
-            /** @var SuperTableBlockElement $block */
-            if (
-                $scenario === Element::SCENARIO_ESSENTIALS ||
-                ($block->enabled && $scenario === Element::SCENARIO_LIVE)
-            ) {
-                $block->setScenario($scenario);
-            }
-
-            if (!$block->validate()) {
-                $element->addModelErrors($block, "{$this->handle}[{$i}]");
-                $allBlocksValidate = false;
-
-                // foreach ($block->getErrors() as $attribute => $errors) {
-                //     $element->addErrors([
-                //         "{$this->handle}[{$i}].{$attribute}" => $errors,
-                //     ]);
-                // }
-            }
+        if ($value instanceof SuperTableBlockQuery) {
+            $blocks = $value->getCachedResult() ?? (clone $value)->status(null)->limit(null)->all();
+        } else {
+            $blocks = $value->all();
         }
 
-        if (!$allBlocksValidate) {
-            // Just in case the blocks weren't already cached
-            $value->setCachedResult($blocks);
+        if ($value instanceof SuperTableBlockQuery) {
+            $allBlocksValidate = true;
+            $scenario = $element->getScenario();
+
+            foreach ($blocks as $i => $block) {
+                /** @var SuperTableBlockElement $block */
+                if (
+                    $scenario === Element::SCENARIO_ESSENTIALS ||
+                    ($block->enabled && $scenario === Element::SCENARIO_LIVE)
+                ) {
+                    $block->setScenario($scenario);
+                }
+
+                if (!$block->validate()) {
+                    $element->addModelErrors($block, "$this->handle[$i]");
+                    $allBlocksValidate = false;
+                }
+            }
+
+            if (!$allBlocksValidate) {
+                // Just in case the blocks weren't already cached
+                $value->setCachedResult($blocks);
+            }
         }
 
         if (
