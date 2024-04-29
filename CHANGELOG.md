@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.14 - 2024-04-29
+
+### Changed
+- Update English translations.
+- Update `validateBlocks()` to deal with eager-loaded and cached blocks.
+
 ## 3.0.13 - 2024-04-10
 
 ### Added
