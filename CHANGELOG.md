@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.15 - 2024-09-13
+
+### Fixed
+- Fix an error when duplicating Super Table blocks.
+
 ## 3.0.14 - 2024-04-29
 
 ### Changed

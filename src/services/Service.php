@@ -917,7 +917,7 @@ class Service extends Component
                     ], ['blockId' => $block->id, 'ownerId' => $target->id], updateTimestamp: false);
                     $newBlockId = $block->id;
                 } else {
-                    $newBlockId = $elementsService->duplicateElement($block, $newAttributes, trackDuplication: $trackDuplications)->id;
+                    $newBlockId = $elementsService->duplicateElement($block, $newAttributes, $trackDuplications)->id;
                 }
 
                 $newBlockIds[] = $newBlockId;
